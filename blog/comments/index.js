@@ -11,10 +11,7 @@ app.use(cors());
 const commentsByPostId = {};
 
 app.get("/posts/:id/comments", (req, res) => {
-  // if (commentsByPostId[req.params.id] === undefined) {
-  //   return res.send([]);
-  // }
-  res.send(commentsByPostId[req.params.id]);
+  res.send(commentsByPostId[req.params.id] || []);
 });
 
 app.post("/posts/:id/comments", async (req, res) => {
