@@ -10,16 +10,16 @@ app.use(cors());
 
 const commentsByPostId = {};
 
-app.get("/posts/:id/comments", (req, res) => {
-  res.send(commentsByPostId[req.params.id] || []);
-});
+// app.get("/posts/:id/comments", (req, res) => {
+//   res.send(commentsByPostId[req.params.id] || []);
+// });
 
 app.post("/posts/:id/comments", async (req, res) => {
   const commentId = randomBytes(4).toString("hex");
   const { content } = req.body;
 
   const comments = commentsByPostId[req.params.id] || [];
-  comments.push({ id: commentId, content });
+  comments.push({ id: commentId, content, status: "pending" });
   commentsByPostId[req.params.id] = comments;
 
   // emit the event to the bus
@@ -29,6 +29,7 @@ app.post("/posts/:id/comments", async (req, res) => {
       id: commentId,
       content,
       postId: req.params.id,
+      status: "pending",
     },
   });
 
